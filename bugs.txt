@@ -1,0 +1,2 @@
+- in server.js querying everything from database instead of just last row
+- on first app load marker is on hard coded lat and lon
