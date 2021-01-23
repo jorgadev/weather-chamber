@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { Text, View, StyleSheet, Alert } from "react-native";
-import { SearchBar, Button } from "react-native-elements";
+import { SearchBar, Button, Image } from "react-native-elements";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -9,17 +9,37 @@ import { useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
 
 // server ip address
-const ip = "http://192.168.64.102:3000/";
+//const ip = "http://192.168.64.102:3000/";
+const ip = "http://10.240.47.35:3000/";
 
 // home screen
 function HomeScreen({ navigation }) {
-  const [name, setName] = useState("CITY");
+  const [name, setName] = useState("None");
+  const [country, setCountry] = useState("ERR");
+  const [temp, setTemp] = useState("0");
+  const [humidity, setHumidity] = useState("0");
+  const [pressure, setPressure] = useState("0");
+  const [wind, setWind] = useState("0");
+  const [description, setDescription] = useState("none");
+  const [icon, setIcon] = useState("01n");
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       fetch(ip)
         .then((response) => response.json())
         .then((json) => {
           setName(json.name);
+          setCountry(json.country);
+          setTemp(json.temp);
+          setPressure(json.pressure);
+          setWind(json.wind);
+          setHumidity(json.humidity);
+          setDescription(
+            json.description
+              .split(" ")
+              .map((x) => x[0].toUpperCase() + x.slice(1))
+              .join(" ")
+          );
+          setIcon(json.icon);
         })
         .catch((error) => {
           console.error(error);
@@ -31,12 +51,102 @@ function HomeScreen({ navigation }) {
     <View
       style={{
         flex: 1,
-        marginTop: 24,
-        justifyContent: "center",
-        alignItems: "center",
+        marginTop: 30,
+        padding: 10,
       }}
     >
-      <Text>{name}</Text>
+      <View
+        style={{
+          backgroundColor: "#fff",
+          flex: 2,
+          paddingVertical: 30,
+          paddingHorizontal: 5,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 32,
+            fontFamily: "sans-serif-light",
+            textAlign: "center",
+            marginBottom: 20,
+          }}
+        >
+          {name}, {country}
+        </Text>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={{
+                uri: "http://openweathermap.org/img/wn/" + icon + "@2x.png",
+              }}
+              style={{ width: 100, height: 100 }}
+            />
+            <Text style={{ fontSize: 16, color: "#555" }}>{description}</Text>
+          </View>
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text style={{ fontSize: 64 }}>{temp}°</Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#fff",
+          marginTop: 10,
+          flexDirection: "row",
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "#999", marginBottom: 10 }}>Wind</Text>
+          <Text>{wind} km/h</Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            borderLeftWidth: 5,
+            borderLeftColor: "#eee",
+            borderRightWidth: 5,
+            borderRightColor: "#eee",
+          }}
+        >
+          <Text style={{ color: "#999", marginBottom: 10 }}>Humidity</Text>
+          <Text>{humidity} %</Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "#999", marginBottom: 10 }}>Pressure</Text>
+          <Text>{pressure} bar</Text>
+        </View>
+      </View>
+      <View
+        style={{ flex: 2, backgroundColor: "royalblue", marginTop: 10 }}
+      ></View>
     </View>
   );
 }
@@ -46,18 +156,25 @@ function MapScreen({ navigation }) {
   const [search, changeSearch] = useState("");
   const [lat, changeLat] = useState(46.54489);
   const [lon, changeLon] = useState(14.95645);
+  const [region, changeRegion] = useState({
+    latitude: lat,
+    longitude: lon,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
   let cityName;
 
   return (
-    <View style={{ flex: 1, marginTop: 24 }}>
+    <View style={{ flex: 1, marginTop: 30, padding: 10 }}>
       <SearchBar
-        placeholder="Type Here.."
+        placeholder="City.."
         platform="android"
         onChangeText={changeSearch}
         value={search}
+        containerStyle={{ paddingBottom: 0, paddingTop: 0 }}
       />
       <Button
-        title="Change"
+        title="Apply"
         onPress={() => {
           if (search != "") {
             cityName = search;
@@ -66,11 +183,8 @@ function MapScreen({ navigation }) {
               .then((json) => {
                 Alert.alert(
                   "Change city",
-                  'Do you really want to change city to "' + cityName + '" ?',
+                  'You changed city to "' + cityName + '" ?',
                   [
-                    {
-                      text: "Cancel",
-                    },
                     {
                       text: "OK",
                       onPress: () => {
@@ -100,11 +214,8 @@ function MapScreen({ navigation }) {
         }}
       />
       <MapView
-        style={{ position: "relative", flex: 1 }}
-        initialRegion={{
-          latitude: lat,
-          longitude: lon,
-        }}
+        style={{ position: "relative", flex: 1, marginTop: 10 }}
+        initialRegion={region}
         onPress={(e) => {
           changeLat(e.nativeEvent.coordinate.latitude);
           changeLon(e.nativeEvent.coordinate.longitude);
@@ -117,28 +228,21 @@ function MapScreen({ navigation }) {
           )
             .then((response) => response.json())
             .then((json) => {
-              if (json.name != "") {
-                Alert.alert(
-                  "Change city",
-                  'Do you really want to change city to "' + json.name + '" ?',
-                  [
-                    {
-                      text: "Cancel",
-                      onPress: () => console.log("Cancel Pressed"),
-                      style: "cancel",
+              Alert.alert(
+                "Change city",
+                'You changed city to "' + json.name + '" ?',
+                [
+                  {
+                    text: "OK",
+                    onPress: () => {
+                      if (json.cod == 200) {
+                        navigation.navigate("Home");
+                      }
                     },
-                    {
-                      text: "OK",
-                      onPress: () => {
-                        if (json.cod == 200) {
-                          navigation.navigate("Home");
-                        }
-                      },
-                    },
-                  ],
-                  { cancelable: false }
-                );
-              }
+                  },
+                ],
+                { cancelable: false }
+              );
             });
         }}
       >

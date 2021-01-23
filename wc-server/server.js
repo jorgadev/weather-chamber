@@ -22,13 +22,14 @@ MongoClient.connect(
     // index page visited
     app.get("/", (req, res) => {
       //get last inserted row from database
+
       db.collection("data")
         .find()
+        .limit(1)
+        .sort({ $natural: -1 })
         .toArray()
-        .then((results) => {
-          res.json(results[results.length - 1]);
-        })
-        .catch((error) => console.error(error));
+        .then((result) => res.json(result[0]))
+        .catch((err) => console.error(err));
     });
 
     // object that will be inserted into db
@@ -101,8 +102,12 @@ MongoClient.connect(
         coord: data.coord,
         temp: (data.main.temp - 273.15).toFixed(0),
         humidity: data.main.humidity,
+        pressure: data.main.pressure,
+        wind: data.wind.speed,
         description: data.weather[0].description,
+        icon: data.weather[0].icon,
       };
+      console.log(dbObject);
       dataCollection
         .insertOne(dbObject)
         .then((result) => {
