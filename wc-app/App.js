@@ -9,11 +9,12 @@ import { useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
 
 // server ip address
-//const ip = "http://192.168.64.102:3000/";
-const ip = "http://10.240.47.35:3000/";
+const ip = "http://192.168.64.102:3000/";
+//const ip = "http://10.240.47.35:3000/";
 
 // home screen
 function HomeScreen({ navigation }) {
+  // define hooks
   const [name, setName] = useState("None");
   const [country, setCountry] = useState("ERR");
   const [temp, setTemp] = useState("0");
@@ -23,10 +24,12 @@ function HomeScreen({ navigation }) {
   const [description, setDescription] = useState("none");
   const [icon, setIcon] = useState("01n");
   useEffect(() => {
+    // on home screen focus fetch data from api
     const unsubscribe = navigation.addListener("focus", () => {
       fetch(ip)
         .then((response) => response.json())
         .then((json) => {
+          // set variables to response data
           setName(json.name);
           setCountry(json.country);
           setTemp(json.temp);
@@ -153,16 +156,28 @@ function HomeScreen({ navigation }) {
 
 // map screen
 function MapScreen({ navigation }) {
+  // declare map variables
   const [search, changeSearch] = useState("");
   const [lat, changeLat] = useState(46.54489);
   const [lon, changeLon] = useState(14.95645);
-  const [region, changeRegion] = useState({
-    latitude: lat,
-    longitude: lon,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
   let cityName;
+
+  useEffect(() => {
+    // on home screen focus fetch data from api
+    const unsubscribe = navigation.addListener("focus", () => {
+      fetch(ip)
+        .then((response) => response.json())
+        .then((json) => {
+          // set variables to response data
+          changeLat(json.coord.lat);
+          changeLon(json.coord.lon);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={{ flex: 1, marginTop: 30, padding: 10 }}>
@@ -215,7 +230,12 @@ function MapScreen({ navigation }) {
       />
       <MapView
         style={{ position: "relative", flex: 1, marginTop: 10 }}
-        initialRegion={region}
+        initialRegion={{
+          latitude: lat,
+          longitude: lon,
+          latitudeDelta: 20,
+          longitudeDelta: 20,
+        }}
         onPress={(e) => {
           changeLat(e.nativeEvent.coordinate.latitude);
           changeLon(e.nativeEvent.coordinate.longitude);
