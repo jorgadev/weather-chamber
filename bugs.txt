@@ -1,4 +1,0 @@
-- FIXED -> in server.js querying everything from database instead of just last row
-- on first app load marker is on hard coded lat and lon, and on city insert
-- on map click city changes even if cancel is clicked
-- maps stuck sometimes 
