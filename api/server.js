@@ -36,6 +36,7 @@ MongoClient.connect(
         .sort({ $natural: -1 })
         .toArray()
         .then((result) => {
+          control.start(dbObject);
           // when data is fetched run control and pass data from api
           return res.json(result[0]);
         })

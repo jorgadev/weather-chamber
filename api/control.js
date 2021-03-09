@@ -39,7 +39,6 @@ module.exports = {
     // else doesn't run anything
     else {
       console.log("opcija A");
-      this.measure();
     }
   },
 
@@ -54,7 +53,7 @@ module.exports = {
       const temp = Math.floor(temperature);
       const hum = Math.floor(humidity);
       console.log(`temp: ${temp}, hum: ${Math.floor(hum)}`);
-      if(temp >= 27){
+      if(temp >= 26){
         RELAY_COOLING.writeSync(1); //set pin state to 1 (turn LED on)
         RELAY_HEATING.writeSync(0);
       }else{
