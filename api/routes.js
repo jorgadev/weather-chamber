@@ -31,18 +31,7 @@ exports.city = (req, res) => {
       `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${WEATHER_API_KEY}`
     )
     .then(function (response) {
-      const cityToInsert = {
-        name: response.data.name,
-        country: response.data.sys.country,
-        coord: response.data.coord,
-        temp: (response.data.main.temp - 273.15).toFixed(0),
-        humidity: response.data.main.humidity,
-        pressure: response.data.main.pressure,
-        wind: response.data.wind.speed,
-        description: response.data.weather[0].description,
-        icon: response.data.weather[0].icon,
-        time: moment.unix(response.data.dt).format("HH:mm"),
-      };
+      const cityToInsert = prepareCity(response);
       mongoUtil.insertIntoDb("data", cityToInsert);
       res.json(response.data);
     })
@@ -50,4 +39,45 @@ exports.city = (req, res) => {
       console.log("City name is not valid");
       res.redirect("/");
     });
+};
+
+// coord - JSON of city with that coords direct from api
+exports.coord = (req, res) => {
+  const coord = req.params;
+
+  // Make a request for a city
+  axios
+    .get(
+      `http://api.openweathermap.org/data/2.5/weather?lat=${coord.lat}&lon=${coord.lon}&appid=${WEATHER_API_KEY}`
+    )
+    .then(function (response) {
+      const cityToInsert = prepareCity(response);
+      mongoUtil.insertIntoDb("data", cityToInsert);
+      res.json(response.data);
+    })
+    .catch(function (error) {
+      console.log("City name is not valid");
+      res.redirect("/");
+    });
+};
+
+// camera
+exports.camera = (req, res) => {
+  res.send("<h1>Camera View</h1>");
+};
+
+// Create city object which will be inserted in database
+const prepareCity = (response) => {
+  return {
+    name: response.data.name,
+    country: response.data.sys.country,
+    coord: response.data.coord,
+    temp: (response.data.main.temp - 273.15).toFixed(0),
+    humidity: response.data.main.humidity,
+    pressure: response.data.main.pressure,
+    wind: response.data.wind.speed,
+    description: response.data.weather[0].description,
+    icon: response.data.weather[0].icon,
+    time: moment.unix(response.data.dt).format("HH:mm"),
+  };
 };
