@@ -1,17 +1,21 @@
-import React from 'react';
-import {SafeAreaView, StyleSheet, View, Text, StatusBar} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-const App = () => {
+import HomeScreen from './HomeScreen';
+import MapsScreen from './MapsScreen';
+import CameraScreen from './CameraScreen';
+
+const Tab = createBottomTabNavigator();
+
+export default function App() {
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <Text>hello, world</Text>
-      </SafeAreaView>
-    </>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Maps" component={MapsScreen} />
+        <Tab.Screen name="Camera" component={CameraScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
-};
-
-const styles = StyleSheet.create({});
-
-export default App;
+}
