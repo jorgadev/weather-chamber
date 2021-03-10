@@ -2,9 +2,11 @@ import React, {useState} from 'react';
 import {View, StyleSheet, Alert} from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import axios from 'axios';
+import {useIp, useUpdateIp} from './IpContext';
 
 export default function IpScreen({setAccess}) {
-  const [ip, setIp] = useState('');
+  const ip = useIp();
+  const updateIp = useUpdateIp();
   const [buttonLoading, setButtonLoading] = useState(false);
 
   // Check if ip is valid
@@ -21,15 +23,13 @@ export default function IpScreen({setAccess}) {
       .then(() => {
         setButtonLoading(false);
       });
-
-    return () => axios.CancelToken.source().cancel();
   };
 
   return (
     <View style={styles.container}>
       <Input
         placeholder="Server IP..."
-        onChangeText={(e) => setIp(e)}
+        onChangeText={(text) => updateIp(text)}
         value={ip}
       />
       <Button
