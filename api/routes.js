@@ -83,7 +83,7 @@ const prepareCity = (response) => {
     name: response.data.name,
     country: response.data.sys.country,
     coord: response.data.coord,
-    temp: (response.data.main.temp - 273.15).toFixed(0),
+    temp: parseInt((response.data.main.temp - 273.15).toFixed(0)),
     humidity: response.data.main.humidity,
     pressure: response.data.main.pressure,
     wind: response.data.wind.speed,

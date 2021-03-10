@@ -23,12 +23,19 @@ const sunny = [
   "broken clouds",
   "overcast clouds",
 ];
-const rainy = ["shower rain", "rain", "thunderstorm", "snow", "moderate rain"];
+const rainy = [
+  "shower rain",
+  "rain",
+  "thunderstorm",
+  "snow",
+  "moderate rain",
+  "light rain",
+];
 const misty = ["mist"];
 
 // Module to export
 module.exports = {
-  start: function () {
+  reset: function () {
     RELAY_COOLING.writeSync(0);
     RELAY_HEATING.writeSync(0);
     RELAY_PUMP.writeSync(0);
@@ -55,38 +62,71 @@ module.exports = {
         console.log(err);
       }
     });
-    this.measure();
   },
 
-  measure: function () {
+  compare: function () {
+    const measureObject = {};
     mongoUtil.getLastRow("data").then((apiData) => {
       sensor.read(DHT_TYPE, DHT_PIN, function (err, temperature, humidity) {
         if (!err) {
           const temp = Math.floor(temperature);
+          const hum = Math.floor(humidity);
+          measureObject.temperature = temp;
+          measureObject.humidity = hum;
           // Compare api and chamber data and control relays
           switch (checkTemperature(apiData.temp, temp)) {
             case 0:
               console.log("nic ne vklapljaj");
+              measureObject.cooling = 0;
+              measureObject.heating = 0;
+              measureObject.fan = 0;
               break;
             case 1:
               console.log("vklopi grelec");
-              RELAY_COOLING.writeSync(0);
-              RELAY_HEATING.writeSync(1);
+              measureObject.cooling = 0;
+              measureObject.heating = 1;
+              measureObject.fan = 1;
               break;
             case -1:
               console.log("vklopi hladilnik");
-              RELAY_COOLING.writeSync(1);
-              RELAY_HEATING.writeSync(0);
+              measureObject.cooling = 1;
+              measureObject.heating = 0;
+              measureObject.fan = 1;
               break;
             default:
               console.log("napaka pri izracunu temperature");
           }
+          switch (checkDescription(apiData.description)) {
+            case "sunny":
+              console.log("nic ne vklapljaj");
+              measureObject.pump = 0;
+              measureObject.steam = 0;
+              break;
+            case "rainy":
+              console.log("pumpo vklopi");
+              measureObject.pump = 1;
+              measureObject.steam = 0;
+              break;
+            case "misty":
+              console.log("meglo vklopi");
+              measureObject.pump = 0;
+              measureObject.steam = 1;
+              break;
+            default:
+              console.log("default desc");
+          }
+          mongoUtil.insertIntoDb("chamber", measureObject);
+          mongoUtil.getLastRow("chamber").then((chamberData) => {
+            RELAY_COOLING.writeSync(chamberData.cooling);
+            RELAY_HEATING.writeSync(chamberData.heating);
+            RELAY_FAN.writeSync(chamberData.fan);
+            RELAY_PUMP.writeSync(chamberData.pump);
+            RELAY_STEAM.writeSync(chamberData.steam);
+          });
         } else {
           console.log(err);
         }
       });
-
-      // checkDescription(apiData.description);
     });
   },
 };
@@ -99,6 +139,18 @@ const checkTemperature = (apiTemp, chamberTemp) => {
   } else if (chamberTemp < apiTemp - 1) {
     return 1;
   } else {
-    return null;
+    return "noneTemp";
+  }
+};
+
+const checkDescription = (desc) => {
+  if (sunny.includes(desc)) {
+    return "sunny";
+  } else if (rainy.includes(desc)) {
+    return "rainy";
+  } else if (misty.includes(desc)) {
+    return "misty";
+  } else {
+    return "noneDesc";
   }
 };
