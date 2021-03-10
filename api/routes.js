@@ -63,7 +63,7 @@ exports.coord = (req, res) => {
 
 // camera
 exports.camera = (req, res) => {
-  res.send("<h1>Camera View</h1>");
+  res.sendFile("camera.html", { root: "views" });
 };
 
 // custom - Insert data on post and render file on get

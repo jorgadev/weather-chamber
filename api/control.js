@@ -76,44 +76,38 @@ module.exports = {
           // Compare api and chamber data and control relays
           switch (checkTemperature(apiData.temp, temp)) {
             case 0:
-              console.log("nic ne vklapljaj");
               measureObject.cooling = 0;
               measureObject.heating = 0;
               measureObject.fan = 0;
               break;
             case 1:
-              console.log("vklopi grelec");
               measureObject.cooling = 0;
               measureObject.heating = 1;
               measureObject.fan = 1;
               break;
             case -1:
-              console.log("vklopi hladilnik");
               measureObject.cooling = 1;
               measureObject.heating = 0;
               measureObject.fan = 1;
               break;
             default:
-              console.log("napaka pri izracunu temperature");
+              console.log("Error in temperature checking");
           }
           switch (checkDescription(apiData.description)) {
             case "sunny":
-              console.log("nic ne vklapljaj");
               measureObject.pump = 0;
               measureObject.steam = 0;
               break;
             case "rainy":
-              console.log("pumpo vklopi");
               measureObject.pump = 1;
               measureObject.steam = 0;
               break;
             case "misty":
-              console.log("meglo vklopi");
               measureObject.pump = 0;
               measureObject.steam = 1;
               break;
             default:
-              console.log("default desc");
+              console.log("Error in description checking");
           }
           mongoUtil.insertIntoDb("chamber", measureObject);
           mongoUtil.getLastRow("chamber").then((chamberData) => {
@@ -139,7 +133,7 @@ const checkTemperature = (apiTemp, chamberTemp) => {
   } else if (chamberTemp < apiTemp - 1) {
     return 1;
   } else {
-    return "noneTemp";
+    return null;
   }
 };
 
@@ -151,6 +145,6 @@ const checkDescription = (desc) => {
   } else if (misty.includes(desc)) {
     return "misty";
   } else {
-    return "noneDesc";
+    return null;
   }
 };
