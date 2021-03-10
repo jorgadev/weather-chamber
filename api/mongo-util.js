@@ -1,7 +1,7 @@
+// Utilities for MongoDB
 const MongoClient = require("mongodb").MongoClient;
 const url =
   "mongodb+srv://wc:rasosora123@cluster0.3bmw3.mongodb.net/weather-chamber-db?retryWrites=true&w=majority";
-
 var _db;
 
 module.exports = {

@@ -66,6 +66,17 @@ exports.camera = (req, res) => {
   res.send("<h1>Camera View</h1>");
 };
 
+// custom - Insert data on post and render file on get
+exports.custom = (req, res) => {
+  if (req.method == "POST") {
+    const data = JSON.parse(req.params.data);
+    mongoUtil.insertIntoDb("data", data);
+    res.send("/");
+  } else {
+    res.sendFile("custom.html", { root: "views" });
+  }
+};
+
 // Create city object which will be inserted in database
 const prepareCity = (response) => {
   return {

@@ -3,15 +3,9 @@ const express = require("express");
 const control = require("./control");
 const mongoUtil = require("./mongo-util");
 
-// GLobal vars
-const WEATHER_API_KEY = "7d7a4da20bb3ed163ff4094419e5ea02";
-const PORT = 3000;
-
-// Define express app and mongodb
+// Start express app on PORT
 const app = express();
-const db = mongoUtil.getDb();
-
-// Express server starts on port 3000
+const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
@@ -26,13 +20,16 @@ mongoUtil.connectToServer(function (err, client) {
   } else {
     console.log("Connected with database established");
 
-    // First run (all relays off and temperature measurement) and enable routes
+    // First run (all relays off with temperature measurement)
     control.start();
 
+    // Routes
     app.get("/", routes.index);
     app.get("/chamber", routes.chamber);
     app.get("/city/:cityName", routes.city);
     app.get("/coord/lat=:lat&lon=:lon", routes.coord);
     app.get("/camera", routes.camera);
+    app.get("/custom", routes.custom);
+    app.post("/custom/:data", routes.custom);
   }
 });

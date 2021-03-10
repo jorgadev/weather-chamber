@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom</title>
+</head>
+<body>
+    <h1>Custom</h1>
+    <form>
+        <p><strong for="temperature">Temperature</strong></p>
+        <input type="range" min="-10" max="30" value="22" id="temperature">
+        <label for="temperature" id="temperature-label">22</label>
+
+        <p><strong for="humidity">Humidity</strong></p>
+        <input type="range" min="0" max="99" value="50" id="humidity">
+        <label for="humidity" id="humidity-label">50</label>
+
+        <p><strong for="description">Description</strong></p>
+        <input type="radio" id="clear-sky" value="clear sky" name="description" checked/>
+        <label for="clear-sky">Clear Sky</label>
+        <input type="radio" id="rain" value="rain" name="description"  />
+        <label for="rain">Rain</label>
+        <input type="radio" id="mist" value="mist" name="description"  />
+        <label for="clear-sky">Mist</label>
+        <div>
+        <br />
+            <button type="submit" id="save-btn">Save</button>
+        </div>
+    </form>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const temperature = document.getElementById("temperature");
+        const temperatureLabel = document.getElementById("temperature-label");
+        const humidity = document.getElementById("humidity");
+        const humidityLabel = document.getElementById("humidity-label");
+        const descriptions = document.getElementsByName("description");
+        const saveButton = document.getElementById("save-btn");
+        const today = new Date();
+        let description = null;
+        let customObj = {};
+        
+        // Url to send request
+        const url = "http://localhost:3000/custom";
+
+        // Set values
+        temperature.addEventListener("mouseup", () => {
+            temperatureLabel.innerText = temperature.value;
+        })
+        humidity.addEventListener("mouseup", () => {
+            humidityLabel.innerText = humidity.value;
+        })
+        
+        // On click create an object and post request custom view
+        saveButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            for(let i = 0; i < descriptions.length; i++){
+                if(descriptions[i].checked){
+                    description = descriptions[i].value;
+                    break;
+                }
+            }
+            customObj = {
+                name: "Custom",
+                country: "SL",
+                coord: "{'lon': 0, 'lat': 0}",
+                temp: temperature.value,
+                humidity: humidity.value,
+                pressure: 0,
+                wind: 0,
+                description: description,
+                icon: "01n",
+                time: `${today.getHours()}:${today.getMinutes()}`
+            }
+            axios.post(`${url}/${JSON.stringify(customObj)}`)
+            .then(res => {window.location.href="/"})
+            .catch(err => console.log(err));
+        })
+    </script>
+</body>
+</html>
