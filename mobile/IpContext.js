@@ -12,7 +12,7 @@ export function useUpdateIp() {
 }
 
 export default function IpProvider({children}) {
-  const [ip, setIp] = useState('');
+  const [ip, setIp] = useState('192.168.64.102:3000');
 
   const updateIp = (newIp) => {
     setIp(newIp);

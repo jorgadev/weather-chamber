@@ -37,7 +37,9 @@ exports.city = (req, res) => {
     })
     .catch(function (error) {
       console.log("City name is not valid");
-      res.redirect("/");
+      res.status(400).send({
+        message: "Invalid",
+      });
     });
 };
 
@@ -57,7 +59,9 @@ exports.coord = (req, res) => {
     })
     .catch(function (error) {
       console.log("City name is not valid");
-      res.redirect("/");
+      res.status(400).send({
+        message: "Invalid",
+      });
     });
 };
 
