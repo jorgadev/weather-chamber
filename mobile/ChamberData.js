@@ -2,8 +2,9 @@ import React, {useState, useEffect} from 'react';
 import {useIp} from './IpContext';
 import axios from 'axios';
 import {View, ActivityIndicator, StyleSheet, Text} from 'react-native';
+import Status from './Status';
 
-export default function ChamberData() {
+export default function ChamberData({dataFetchAction}) {
   const ip = useIp();
   const [chamberData, setChamberData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -11,7 +12,7 @@ export default function ChamberData() {
   // Fetch data on first load
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [dataFetchAction]);
 
   // Fetch data and set the state
   const fetchData = () => {
@@ -28,19 +29,25 @@ export default function ChamberData() {
         setIsLoading(false);
       });
   };
-  return isLoading ? (
-    <ActivityIndicator size="large" color="#3182ce" />
-  ) : (
+  return (
     <View style={styles.container}>
-      <View style={styles.mainData}>
-        <View>
-          <Text>testtest</Text>
+      {isLoading ? (
+        <ActivityIndicator size="large" color="white" />
+      ) : (
+        <View style={styles.mainData}>
+          <View>
+            <Status type="Hlajenje" value={chamberData.cooling} />
+            <Status type="Gretje" value={chamberData.heating} />
+            <Status type="Pumpa" value={chamberData.pump} />
+            <Status type="Megla" value={chamberData.steam} />
+            <Status type="Ventilator" value={chamberData.fan} />
+          </View>
+          <View style={styles.tempAndHum}>
+            <Text style={styles.temp}>{chamberData.temperature} °C</Text>
+            <Text style={styles.hum}>{chamberData.humidity} %</Text>
+          </View>
         </View>
-        <View style={styles.tempAndHum}>
-          <Text style={styles.temp}>{chamberData.temperature} °C</Text>
-          <Text style={styles.hum}>{chamberData.humidity} %</Text>
-        </View>
-      </View>
+      )}
     </View>
   );
 }
@@ -74,7 +81,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   hum: {
-    color: 'gray',
+    color: '#ccc',
     textAlign: 'center',
   },
 });

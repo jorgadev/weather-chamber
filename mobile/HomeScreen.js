@@ -6,11 +6,13 @@ import WeatherData from './WeatherData';
 import ChamberData from './ChamberData';
 
 export default function HomeScreen() {
+  const [dataFetchAction, setDataFetchAction] = useState(false);
+
   return (
     <View style={styles.container}>
-      <Navbar />
-      <WeatherData />
-      <ChamberData />
+      <Navbar setDataFetchAction={setDataFetchAction} />
+      <WeatherData dataFetchAction={dataFetchAction} />
+      <ChamberData dataFetchAction={dataFetchAction} />
     </View>
   );
 }
