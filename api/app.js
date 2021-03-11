@@ -21,10 +21,10 @@ mongoUtil.connectToServer(function (err, client) {
     console.log("Connection with database established");
 
     // First run (all relays off with temperature measurement)
-    // control.reset();
+    control.reset();
 
     // Compare values in chamber and from api every 5 seconds
-    // setInterval(control.compare, 5000);
+    setInterval(control.compare, 5000);
 
     // Routes
     app.get("/", routes.index);
