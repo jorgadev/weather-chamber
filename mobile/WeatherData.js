@@ -7,7 +7,6 @@ import Widget from './Widget';
 export default function WeatherData() {
   const ip = useIp();
   const [apiData, setApiData] = useState(null);
-  const [chamberData, setChamberData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Fetch data on first load
@@ -27,15 +26,7 @@ export default function WeatherData() {
         Alert.alert('Error', error.message);
       })
       .then(() => {
-        axios
-          .get(`http://${ip}/chamber`)
-          .then(function (response) {
-            setChamberData(response.data);
-            setIsLoading(false);
-          })
-          .catch(function (error) {
-            Alert.alert('Error', error.message);
-          });
+        setIsLoading(false);
       });
   };
   return isLoading ? (
