@@ -36,7 +36,7 @@ export default function IpScreen({setAccess}) {
         value={ip}
       />
       <Button
-        title="CONNECT"
+        title="POVEŽI"
         containerStyle={styles.button}
         onPress={validateIp}
         loading={buttonLoading}
