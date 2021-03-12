@@ -3,6 +3,7 @@ import {View, Alert, StyleSheet} from 'react-native';
 import Navbar from './Navbar';
 import SettingsModal from './SettingsModal';
 import CityInput from './CityInput';
+import MapContainer from './MapContainer';
 
 export default function MapsScreen() {
   const [dataFetchAction, setDataFetchAction] = useState(false);
@@ -15,6 +16,7 @@ export default function MapsScreen() {
         setIsModalVisible={setIsModalVisible}
         showRefresh={false}
       />
+      <MapContainer />
       <CityInput />
       <SettingsModal
         isModalVisible={isModalVisible}

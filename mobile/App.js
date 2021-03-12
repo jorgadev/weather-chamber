@@ -16,7 +16,7 @@ LogBox.ignoreAllLogs(true);
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [access, setAccess] = useState(true);
+  const [access, setAccess] = useState(false);
 
   return (
     <IpProvider>

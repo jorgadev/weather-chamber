@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Alert} from 'react-native';
+import {View, Alert, StyleSheet} from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import {useIp} from './IpContext';
 import axios from 'axios';
@@ -41,17 +41,31 @@ export default function CityInput() {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Input
         placeholder="Ime kraja..."
         value={newCity}
         onChangeText={(text) => setNewCity(text)}
       />
-      <Button
-        title="DODAJ"
-        containerStyle={{width: '90%'}}
-        onPress={showAlert}
-      />
+      <Button title="IZBERI" onPress={showAlert} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    margin: 5,
+    marginTop: 0,
+    margin: 5,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+});
