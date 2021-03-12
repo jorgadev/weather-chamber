@@ -31,8 +31,8 @@ export default function SettingsModal({isModalVisible, setIsModalVisible}) {
     const today = new Date();
     const url = `http://${ip}/custom`;
     const customObj = {
-      name: 'Custom',
-      country: 'SL',
+      name: 'Po meri',
+      country: 'PP',
       coord: "{'lon': 0, 'lat': 0}",
       temp: parseInt(temperature),
       humidity: parseInt(humidity),
