@@ -15,11 +15,10 @@ export default function IpScreen({setAccess}) {
     axios
       .get(`http://${ip}`)
       .then(function (response) {
-        console.log(response);
         setAccess(true);
       })
       .catch(function (error) {
-        Alert.alert('Napaka', 'Preverite IP naslov');
+        Alert.alert('Napaka', JSON.stringify(error));
       })
       .then(() => {
         setButtonLoading(false);
