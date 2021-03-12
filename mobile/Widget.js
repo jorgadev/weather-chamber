@@ -6,7 +6,7 @@ export default function Widget({width, title, data}) {
     <View
       style={[
         styles.widget,
-        width == 2 ? {marginHorizontal: 5} : {marginHorizontal: 0},
+        width == 3 ? {marginHorizontal: 5} : {marginHorizontal: 0},
       ]}
       flex={width}>
       <Text style={styles.title}>{title}</Text>

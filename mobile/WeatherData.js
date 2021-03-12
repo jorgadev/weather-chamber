@@ -61,10 +61,10 @@ export default function WeatherData({dataFetchAction}) {
           <ActivityIndicator size="large" color="#3182ce" />
         ) : (
           <>
-            <Widget width={1} title="Veter" data={`${apiData.wind} km/h`} />
-            <Widget width={2} title="Čas meritve" data={`${apiData.time}`} />
+            <Widget width={2} title="Veter" data={`${apiData.wind} km/h`} />
+            <Widget width={3} title="Čas meritve" data={`${apiData.time}`} />
             <Widget
-              width={1}
+              width={2}
               title="Pritisk"
               data={`${apiData.pressure} bar`}
             />

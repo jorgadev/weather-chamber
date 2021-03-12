@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity, Button, Text} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Modal from 'react-native-modal';
 
 export default function Navbar({setDataFetchAction, setIsModalVisible}) {
   return (
