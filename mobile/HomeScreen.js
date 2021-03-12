@@ -15,6 +15,7 @@ export default function HomeScreen() {
       <Navbar
         setDataFetchAction={setDataFetchAction}
         setIsModalVisible={setIsModalVisible}
+        showRefresh={true}
       />
       <WeatherData dataFetchAction={dataFetchAction} />
       <ChamberData dataFetchAction={dataFetchAction} />
