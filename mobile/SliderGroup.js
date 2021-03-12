@@ -2,10 +2,15 @@ import React, {useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import Slider from '@react-native-community/slider';
 
-export default function SliderGroup({title, min, max}) {
-  const [temperature, setTemperature] = useState(0);
-  const [humidity, setHumidity] = useState(0);
-
+export default function SliderGroup({
+  title,
+  min,
+  max,
+  temperature,
+  setTemperature,
+  humidity,
+  setHumidity,
+}) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
