@@ -16,7 +16,7 @@ LogBox.ignoreAllLogs(true);
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [access, setAccess] = useState(false);
+  const [access, setAccess] = useState(true);
 
   return (
     <IpProvider>
@@ -37,13 +37,11 @@ export default function App() {
                   } else if (route.name === 'Camera') {
                     iconName = focused ? 'camera' : 'camera-outline';
                   }
-
-                  // You can return any component that you like here!
                   return <Ionicons name={iconName} size={size} color={color} />;
                 },
               })}
               tabBarOptions={{
-                activeTintColor: 'blue',
+                activeTintColor: '#3182ce',
                 inactiveTintColor: 'gray',
               }}>
               <Tab.Screen name="Home" component={HomeScreen} />

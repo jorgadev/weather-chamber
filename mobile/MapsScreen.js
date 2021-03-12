@@ -53,11 +53,15 @@ export default function MapsScreen() {
       }}>
       {isLoading && Alert.alert('Loading')}
       <Input
-        placeholder="City name..."
+        placeholder="Ime kraja..."
         value={newCity}
         onChangeText={(text) => setNewCity(text)}
       />
-      <Button title="ADD" containerStyle={{width: '90%'}} onPress={showAlert} />
+      <Button
+        title="DODAJ"
+        containerStyle={{width: '90%'}}
+        onPress={showAlert}
+      />
     </View>
   );
 }

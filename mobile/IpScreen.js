@@ -29,11 +29,14 @@ export default function IpScreen({setAccess}) {
     <View style={styles.container}>
       <Input
         placeholder="Server IP..."
-        onChangeText={(text) => updateIp(text)}
+        onChangeText={(text) => {
+          setButtonLoading(false);
+          updateIp(text);
+        }}
         value={ip}
       />
       <Button
-        title="CONNECT"
+        title="POVEŽI"
         containerStyle={styles.button}
         onPress={validateIp}
         loading={buttonLoading}
