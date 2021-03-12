@@ -56,8 +56,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     margin: 5,
-    marginTop: 0,
-    margin: 5,
     padding: 10,
     shadowColor: '#000',
     shadowOffset: {
