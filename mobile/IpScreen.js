@@ -11,6 +11,10 @@ export default function IpScreen({setAccess}) {
 
   // Check if ip is valid
   const validateIp = () => {
+    let timer = setTimeout(() => {
+      Alert.alert('Napaka', 'Ip neveljaven');
+      setButtonLoading(false);
+    }, 5000);
     setButtonLoading(true);
     axios
       .get(`http://${ip}`)
@@ -21,6 +25,7 @@ export default function IpScreen({setAccess}) {
         Alert.alert('Napaka', JSON.stringify(error));
       })
       .then(() => {
+        clearTimeout(timer);
         setButtonLoading(false);
       });
   };

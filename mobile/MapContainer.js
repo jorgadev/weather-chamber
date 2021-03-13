@@ -9,6 +9,7 @@ export default function MapContainer() {
   const [mapLatitude, setMapLatitude] = useState(51.5078788);
   const [mapLongitude, setMapLongitude] = useState(-0.0877321);
 
+  // Change coordinates of marker and mapview
   const changeCoords = (coords) => {
     if (coords) {
       setMapLatitude(coords.latitude);
@@ -32,6 +33,7 @@ export default function MapContainer() {
     }
   };
 
+  // Change city in api
   const changeCity = (lat, lon) => {
     axios
       .get(`http://${ip}/coord/lat=${lat}&lon=${lon}`)
