@@ -14,10 +14,10 @@ export default function IpScreen({setAccess}) {
     let timer = setTimeout(() => {
       Alert.alert('Napaka', 'Ip neveljaven');
       setButtonLoading(false);
-    }, 5000);
+    }, 3000);
     setButtonLoading(true);
     axios
-      .get(`http://${ip}`)
+      .get(`http://${ip}:3000`)
       .then(function (response) {
         setAccess(true);
       })

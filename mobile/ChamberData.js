@@ -18,7 +18,7 @@ export default function ChamberData({dataFetchAction}) {
   const fetchData = () => {
     setIsLoading(true);
     axios
-      .get(`http://${ip}/chamber`)
+      .get(`http://${ip}:3000/chamber`)
       .then(function (response) {
         setChamberData(response.data);
       })

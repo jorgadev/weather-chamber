@@ -14,7 +14,7 @@ export default function MapContainer({setDataFetchAction}) {
   useEffect(() => {
     // Fetch data and set the state
     axios
-      .get(`http://${ip}`)
+      .get(`http://${ip}:3000`)
       .then(function (response) {
         setMapLatitude(response.data.coord.lat);
         setMapLongitude(response.data.coord.lon);
@@ -53,7 +53,7 @@ export default function MapContainer({setDataFetchAction}) {
   // Change city in api
   const changeCity = (lat, lon) => {
     axios
-      .get(`http://${ip}/coord/lat=${lat}&lon=${lon}`)
+      .get(`http://${ip}:3000/coord/lat=${lat}&lon=${lon}`)
       .then(function (response) {
         setDataFetchAction((prev) => !prev);
         Alert.alert(

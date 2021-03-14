@@ -33,7 +33,7 @@ export default function SettingsModal({
   const insertCustom = () => {
     const descriptionToInsert = chooseDescription(selectedOption);
     const today = new Date();
-    const url = `http://${ip}/custom`;
+    const url = `http://${ip}:3000/custom`;
     const customObj = {
       name: 'Po meri',
       country: 'PP',

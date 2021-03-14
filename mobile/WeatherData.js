@@ -18,7 +18,7 @@ export default function WeatherData({dataFetchAction}) {
   const fetchData = () => {
     setIsLoading(true);
     axios
-      .get(`http://${ip}`)
+      .get(`http://${ip}:3000`)
       .then(function (response) {
         setApiData(response.data);
       })

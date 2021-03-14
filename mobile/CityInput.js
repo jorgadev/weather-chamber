@@ -27,7 +27,7 @@ export default function CityInput({setDataFetchAction}) {
 
   const changeCity = () => {
     axios
-      .get(`http://${ip}/city/${newCity}`)
+      .get(`http://${ip}:3000/city/${newCity}`)
       .then(function (response) {
         setDataFetchAction((prev) => !prev);
         Alert.alert(

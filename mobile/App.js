@@ -60,7 +60,12 @@ export default function App() {
                   <MapsScreen setDataFetchAction={setDataFetchAction} />
                 )}
               />
-              <Tab.Screen name="Kamera" component={CameraScreen} />
+              <Tab.Screen
+                name="Kamera"
+                component={() => (
+                  <CameraScreen setDataFetchAction={setDataFetchAction} />
+                )}
+              />
             </Tab.Navigator>
           </NavigationContainer>
         )}
