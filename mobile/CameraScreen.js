@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, StyleSheet, Text, Alert} from 'react-native';
 import {WebView} from 'react-native-webview';
+import {Button} from 'react-native-elements';
 import Navbar from './Navbar';
 import SettingsModal from './SettingsModal';
 import {useIp} from './IpContext';
@@ -14,12 +15,17 @@ export default function CameraScreen({setDataFetchAction}) {
       <Navbar
         setIsModalVisible={setIsModalVisible}
         setDataFetchAction={setDataFetchAction}
-        showRefresh={false}
       />
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={styles.container}>
         <WebView
           source={{uri: `http://${ip}:9000/javascript_simple.html`}}
-          containerStyle={{width: '100%', height: '100%'}}
+          containerStyle={styles.webview}
+        />
+        <Button
+          title="OSVEŽI"
+          buttonStyle={styles.button}
+          containerStyle={styles.buttonContainer}
+          onPress={() => setDataFetchAction((prev) => !prev)}
         />
       </View>
       <SettingsModal
@@ -30,3 +36,22 @@ export default function CameraScreen({setDataFetchAction}) {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    margin: 5,
+  },
+  webview: {
+    flex: 4,
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  button: {
+    paddingHorizontal: 20,
+  },
+});
