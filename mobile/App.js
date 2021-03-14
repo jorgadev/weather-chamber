@@ -17,6 +17,7 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   const [access, setAccess] = useState(false);
+  const [dataFetchAction, setDataFetchAction] = useState(false);
 
   return (
     <IpProvider>
@@ -44,8 +45,21 @@ export default function App() {
                 activeTintColor: '#3182ce',
                 inactiveTintColor: 'gray',
               }}>
-              <Tab.Screen name="Domov" component={HomeScreen} />
-              <Tab.Screen name="Zemljevid" component={MapsScreen} />
+              <Tab.Screen
+                name="Domov"
+                component={() => (
+                  <HomeScreen
+                    dataFetchAction={dataFetchAction}
+                    setDataFetchAction={setDataFetchAction}
+                  />
+                )}
+              />
+              <Tab.Screen
+                name="Zemljevid"
+                component={() => (
+                  <MapsScreen setDataFetchAction={setDataFetchAction} />
+                )}
+              />
               <Tab.Screen name="Kamera" component={CameraScreen} />
             </Tab.Navigator>
           </NavigationContainer>

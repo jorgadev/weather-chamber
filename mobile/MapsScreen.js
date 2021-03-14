@@ -5,8 +5,7 @@ import SettingsModal from './SettingsModal';
 import CityInput from './CityInput';
 import MapContainer from './MapContainer';
 
-export default function MapsScreen() {
-  const [dataFetchAction, setDataFetchAction] = useState(false);
+export default function MapsScreen({setDataFetchAction}) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
@@ -16,11 +15,12 @@ export default function MapsScreen() {
         setIsModalVisible={setIsModalVisible}
         showRefresh={false}
       />
-      <MapContainer />
-      <CityInput />
+      <MapContainer setDataFetchAction={setDataFetchAction} />
+      <CityInput setDataFetchAction={setDataFetchAction} />
       <SettingsModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
+        setDataFetchAction={setDataFetchAction}
       />
     </View>
   );

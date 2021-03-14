@@ -7,7 +7,11 @@ import {SegmentedControls} from 'react-native-radio-buttons';
 import axios from 'axios';
 import {useIp} from './IpContext';
 
-export default function SettingsModal({isModalVisible, setIsModalVisible}) {
+export default function SettingsModal({
+  isModalVisible,
+  setIsModalVisible,
+  setDataFetchAction,
+}) {
   const [selectedOption, setSelectedOption] = useState('Sonce');
   const [temperature, setTemperature] = useState(0);
   const [humidity, setHumidity] = useState(0);
@@ -33,7 +37,7 @@ export default function SettingsModal({isModalVisible, setIsModalVisible}) {
     const customObj = {
       name: 'Po meri',
       country: 'PP',
-      coord: "{'lon': 0, 'lat': 0}",
+      coord: {lon: 14.95732766344636, lat: 46.54156930499647},
       temp: parseInt(temperature),
       humidity: parseInt(humidity),
       pressure: 0,
@@ -47,6 +51,7 @@ export default function SettingsModal({isModalVisible, setIsModalVisible}) {
     axios
       .post(`${url}/${JSON.stringify(customObj)}`)
       .then(() => {
+        setDataFetchAction((prev) => !prev);
         setIsModalVisible(false);
       })
       .catch((err) => console.log(err));

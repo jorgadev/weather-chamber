@@ -4,7 +4,7 @@ import {Input, Button} from 'react-native-elements';
 import {useIp} from './IpContext';
 import axios from 'axios';
 
-export default function CityInput() {
+export default function CityInput({setDataFetchAction}) {
   const ip = useIp();
   const [newCity, setNewCity] = useState('');
 
@@ -16,7 +16,6 @@ export default function CityInput() {
           [
             {
               text: 'PREKLIČI',
-              onPress: () => console.log('Cancel Pressed'),
               style: 'cancel',
             },
             {text: 'OK', onPress: () => changeCity()},
@@ -30,10 +29,14 @@ export default function CityInput() {
     axios
       .get(`http://${ip}/city/${newCity}`)
       .then(function (response) {
-        Alert.alert('Successfuly changed', JSON.stringify(response.data));
+        setDataFetchAction((prev) => !prev);
+        Alert.alert(
+          'Sprememba mesta',
+          `Trenutno mesto je ${JSON.stringify(response.data.name)}`,
+        );
       })
       .catch(function (error) {
-        Alert.alert('Error', JSON.stringify(error));
+        Alert.alert('Napaka', JSON.stringify(error));
       })
       .then(() => {
         setNewCity('');
