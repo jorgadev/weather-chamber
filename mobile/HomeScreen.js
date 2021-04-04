@@ -6,8 +6,7 @@ import WeatherData from './WeatherData';
 import ChamberData from './ChamberData';
 import SettingsModal from './SettingsModal';
 
-export default function HomeScreen() {
-  const [dataFetchAction, setDataFetchAction] = useState(false);
+export default function HomeScreen({dataFetchAction, setDataFetchAction}) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
@@ -15,12 +14,14 @@ export default function HomeScreen() {
       <Navbar
         setDataFetchAction={setDataFetchAction}
         setIsModalVisible={setIsModalVisible}
+        showRefresh={true}
       />
       <WeatherData dataFetchAction={dataFetchAction} />
       <ChamberData dataFetchAction={dataFetchAction} />
       <SettingsModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
+        setDataFetchAction={setDataFetchAction}
       />
     </View>
   );

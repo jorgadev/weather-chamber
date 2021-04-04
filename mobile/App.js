@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -16,7 +16,8 @@ LogBox.ignoreAllLogs(true);
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [access, setAccess] = useState(true);
+  const [access, setAccess] = useState(false);
+  const [dataFetchAction, setDataFetchAction] = useState(false);
 
   return (
     <IpProvider>
@@ -30,11 +31,11 @@ export default function App() {
                 tabBarIcon: ({focused, color, size}) => {
                   let iconName;
 
-                  if (route.name === 'Home') {
+                  if (route.name === 'Domov') {
                     iconName = focused ? 'home' : 'home-outline';
-                  } else if (route.name === 'Maps') {
+                  } else if (route.name === 'Zemljevid') {
                     iconName = focused ? 'locate' : 'locate-outline';
-                  } else if (route.name === 'Camera') {
+                  } else if (route.name === 'Kamera') {
                     iconName = focused ? 'camera' : 'camera-outline';
                   }
                   return <Ionicons name={iconName} size={size} color={color} />;
@@ -44,9 +45,27 @@ export default function App() {
                 activeTintColor: '#3182ce',
                 inactiveTintColor: 'gray',
               }}>
-              <Tab.Screen name="Home" component={HomeScreen} />
-              <Tab.Screen name="Maps" component={MapsScreen} />
-              <Tab.Screen name="Camera" component={CameraScreen} />
+              <Tab.Screen
+                name="Domov"
+                component={() => (
+                  <HomeScreen
+                    dataFetchAction={dataFetchAction}
+                    setDataFetchAction={setDataFetchAction}
+                  />
+                )}
+              />
+              <Tab.Screen
+                name="Zemljevid"
+                component={() => (
+                  <MapsScreen setDataFetchAction={setDataFetchAction} />
+                )}
+              />
+              <Tab.Screen
+                name="Kamera"
+                component={() => (
+                  <CameraScreen setDataFetchAction={setDataFetchAction} />
+                )}
+              />
             </Tab.Navigator>
           </NavigationContainer>
         )}

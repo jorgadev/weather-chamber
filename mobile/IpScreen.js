@@ -11,16 +11,21 @@ export default function IpScreen({setAccess}) {
 
   // Check if ip is valid
   const validateIp = () => {
+    let timer = setTimeout(() => {
+      Alert.alert('Napaka', 'Ip neveljaven');
+      setButtonLoading(false);
+    }, 3000);
     setButtonLoading(true);
     axios
-      .get(`http://${ip}`)
+      .get(`http://${ip}:3000`)
       .then(function (response) {
         setAccess(true);
       })
       .catch(function (error) {
-        Alert.alert('Error', error.message);
+        Alert.alert('Napaka', JSON.stringify(error));
       })
       .then(() => {
+        clearTimeout(timer);
         setButtonLoading(false);
       });
   };
