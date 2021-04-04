@@ -21,12 +21,6 @@ export default function CameraScreen({setDataFetchAction}) {
           source={{uri: `http://${ip}:9000/javascript_simple.html`}}
           containerStyle={styles.webview}
         />
-        <Button
-          title="OSVEŽI"
-          buttonStyle={styles.button}
-          containerStyle={styles.buttonContainer}
-          onPress={() => setDataFetchAction((prev) => !prev)}
-        />
       </View>
       <SettingsModal
         isModalVisible={isModalVisible}
@@ -41,17 +35,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 5,
-  },
-  webview: {
-    flex: 4,
-  },
-  buttonContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  button: {
-    paddingHorizontal: 20,
   },
 });

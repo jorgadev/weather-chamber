@@ -33,15 +33,14 @@ export default function IpScreen({setAccess}) {
   return (
     <View style={styles.container}>
       <Input
-        placeholder="Server IP..."
+        placeholder="Raspberry IP..."
         onChangeText={(text) => {
           setButtonLoading(false);
           updateIp(text);
         }}
-        value={ip}
       />
       <Button
-        title="POVEŽI"
+        title="POVEŽI SE"
         containerStyle={styles.button}
         onPress={validateIp}
         loading={buttonLoading}
