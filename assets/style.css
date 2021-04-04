@@ -9,7 +9,7 @@ body {
   height: 100vh;
   display: grid;
   place-items: center;
-  font-family: "Montserrat", monospace;
+  font-family: "Montserrat", sans-serif;
 }
 .wrapper {
   display: flex;
@@ -34,4 +34,8 @@ body {
 .wrapper .ip span,
 .wrapper .wifi span {
   font-weight: bold;
+}
+
+.wrapper .link {
+  margin-top: 50px;
 }
