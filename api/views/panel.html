@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="#" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="center">
+      <h3 id="name">Nalagam..</h3>
+      <p id="desc">opis vremena</p>
+      <h1><span id="temp">0</span> °C</h1>
+    </div>
+    <div class="bottom-left">
+      <h3>V komori:</h3>
+      <p>Temperatura: <span id="chamber-temp">0</span>°C</p>
+      <p>Vlaga: <span id="chamber-hum">0</span>%</p>
+    </div>
+    <div class="bottom-right">
+      <h3>Releji:</h3>
+      <p>Hlajenje: <span id="relay-cooling">0</span></p>
+      <p>Gretje: <span id="relay-heating">0</span></p>
+      <p>Pumpa: <span id="relay-pump">0</span></p>
+      <p>Ventilator: <span id="relay-fan">0</span></p>
+      <p>Para: <span id="relay-steam">0</span></p>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      const ip = "http://localhost";
+      const name = document.getElementById("name");
+      const desc = document.getElementById("desc");
+      const temp = document.getElementById("temp");
+      const hum = document.getElementById("hum");
+      const chamberTemp = document.getElementById("chamber-temp");
+      const chamberHum = document.getElementById("chamber-hum");
+      const relayCooling = document.getElementById("relay-cooling");
+      const relayHeating = document.getElementById("relay-heating");
+      const relayPump = document.getElementById("relay-pump");
+      const relayFan = document.getElementById("relay-fan");
+      const relaySteam = document.getElementById("relay-steam");
+      const setData = () => {
+        // Make a request for a user with a given ID
+        axios
+          .get(`${ip}:3000`)
+          .then(function (response) {
+            const data = response.data;
+            name.innerText = data.name;
+            desc.innerHTML = data.description;
+            temp.innerText = data.temp;
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+          .then(function () {
+            axios
+              .get(`${ip}:3000/chamber`)
+              .then(function (response) {
+                const data = response.data;
+                chamberTemp.innerText = data.temperature;
+                chamberHum.innerText = data.humidity;
+                relayCooling.innerText = data.cooling;
+                relayHeating.innerText = data.heating;
+                relayPump.innerText = data.pump;
+                relayFan.innerText = data.fan;
+                relaySteam.innerText = data.steam;
+              })
+              .catch(function (error) {
+                // handle error
+                console.log(error);
+              })
+              .then(function () {
+                // always executed
+              });
+          });
+      };
+
+      setInterval(setData, 5000);
+    </script>
+  </body>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: black;
+      color: white;
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .center {
+      text-align: center;
+    }
+    .center p {
+      color: lightgrey;
+    }
+    .center h1 {
+      margin-top: 20px;
+      font-size: 64px;
+      font-weight: lighter;
+    }
+    .bottom-left,
+    .bottom-right {
+      background: rgba(255, 255, 255, 0.1);
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px;
+      width: 20vw;
+    }
+    .bottom-left h3,
+    .bottom-right h3 {
+      margin-bottom: 20px;
+    }
+
+    .bottom-right {
+      left: auto;
+      right: 20px;
+    }
+  </style>
+</html>

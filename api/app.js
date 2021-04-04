@@ -34,5 +34,6 @@ mongoUtil.connectToServer(function (err, client) {
     app.get("/camera", routes.camera);
     app.get("/custom", routes.custom);
     app.post("/custom/:data", routes.custom);
+    app.get("/panel", routes.panel);
   }
 });

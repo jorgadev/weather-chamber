@@ -30,6 +30,7 @@ const rainy = [
   "snow",
   "moderate rain",
   "light rain",
+  "light snow",
 ];
 const misty = ["mist"];
 

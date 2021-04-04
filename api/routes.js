@@ -81,11 +81,17 @@ exports.custom = (req, res) => {
   }
 };
 
+// custom - Insert data on post and render file on get
+exports.panel = (req, res) => {
+  res.sendFile("panel.html", { root: "views" });
+};
+
 // Create city object which will be inserted in database
 const prepareCity = (response) => {
   return {
-    name: response.data.name,
-    country: response.data.sys.country,
+    name: response.data.name == "" ? "Neznano" : response.data.name,
+    country:
+      response.data.sys.country == null ? "NN" : response.data.sys.country,
     coord: response.data.coord,
     temp: parseInt((response.data.main.temp - 273.15).toFixed(0)),
     humidity: response.data.main.humidity,
