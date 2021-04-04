@@ -24,8 +24,9 @@ body {
 .wrapper a img:hover {
   transform: scale(1.02);
 }
-.wrapper .ip {
+.wrapper .wifi {
   margin-top: 50px;
+  margin-bottom: 5px;
 }
 .wrapper .ip span,
 .wrapper .wifi span {
